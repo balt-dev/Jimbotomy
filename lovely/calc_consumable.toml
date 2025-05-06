@@ -1,0 +1,35 @@
+[manifest]
+version = "1.0.0"
+priority = 99990
+
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = "G.FUNCS.use_card = function(e, mute, nosave)"
+position = "after"
+payload = '''
+if e.config.ref_table.ability.consumeable then
+	for i = 1, #G.jokers.cards do
+	    G.jokers.cards[i]:calculate_joker({using_consumeable = true})
+	end
+end
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "if self.real_dt > 0.05 then print('LONG DT @ '..math.floor(G.TIMERS.REAL)..': '..self.real_dt) end"
+position = "before"
+payload = '''--[['''
+match_indent = true
+times = 1
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "if self.real_dt > 0.05 then print('LONG DT @ '..math.floor(G.TIMERS.REAL)..': '..self.real_dt) end"
+position = "after"
+payload = ''']]'''
+match_indent = true
+times = 1
