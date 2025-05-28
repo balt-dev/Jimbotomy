@@ -1,0 +1,69 @@
+[manifest]
+version = "1.2"
+dump_lua = true
+priority = 0
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = """localize{type = 'descriptions', key = _c.key, set = _c.set, nodes = desc_nodes, vars = _c.vars or loc_vars}"""
+position = "after"
+payload = """    
+elseif _c.set == 'AikoyoriExtraBases' then
+    if _c.is_null then
+    
+        if(G.GAME.akyrs_letters_mult_enabled) then
+            localize{type = 'descriptions', key = _c.key, set = _c.set, full_UI_table.name, vars = _c.vars or loc_vars}
+        end
+        
+        if(G.GAME.akyrs_letters_xmult_enabled) then
+            localize{type = 'descriptions', key = "x".._c.key, set = _c.set, full_UI_table.name, vars = _c.vars or loc_vars}
+        end
+        if(not G.GAME.akyrs_letters_mult_enabled and not G.GAME.akyrs_letters_xmult_enabled) then
+            full_UI_table.name = localize{type = 'name', set = _c.set, key = _c.key, nodes = full_UI_table.name, vars = _c.vars or loc_vars}
+        end
+        localize{type = 'other', key = 'aiko_x_akyrs_null', nodes = desc_nodes, vars = _c.vars or loc_vars}
+    end
+    if(G.GAME.akyrs_letters_mult_enabled or G.GAME.akyrs_letters_xmult_enabled) then
+    
+        if(G.GAME.akyrs_letters_mult_enabled) then
+            localize{type = 'descriptions', key = _c.key, set = _c.set, nodes = desc_nodes, vars = _c.vars or loc_vars}
+        end
+        
+        if(G.GAME.akyrs_letters_xmult_enabled) then
+            localize{type = 'descriptions', key = "x".._c.key, set = _c.set, nodes = desc_nodes, vars = _c.vars or loc_vars}
+        end
+    else
+        if not _c.is_null and string.sub(_c.key, -1) then
+            local last_letter = string.lower(string.sub(_c.key, -1))
+            local key = "letterNotScored"
+            if(AKYRS.non_letter_symbols_reverse[last_letter]) then
+                key = key.."Symbols"
+            end
+            if(tonumber(last_letter)) then
+                key = key.."Numbers"
+            end
+            localize{type = 'descriptions', key = key , set = _c.set, nodes = desc_nodes, vars = _c.vars or loc_vars}
+        else 
+            localize{type = 'descriptions', key = "aiko_x_akyrs_null", set = _c.set, nodes = desc_nodes, vars = _c.vars or loc_vars}
+        end
+    end
+    if(_c.key == "lettersWild") then
+        localize{type = 'descriptions', key = "lettersWildSet", set = _c.set, nodes = desc_nodes, vars = _c.vars or loc_vars}
+    end
+elseif _c.set == 'DescriptionDummy' then
+    localize{type = 'descriptions', key = _c.key, set = _c.set, nodes = desc_nodes, vars = _c.vars or loc_vars}
+"""
+overwrite = true
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = """    return generate_card_ui(self.config.center, nil, loc_vars, card_type, badges, hide_desc, main_start, main_end)"""
+position = "before"
+payload = """
+self.config.center.is_null = self.is_null
+"""
+overwrite = true
+match_indent = true

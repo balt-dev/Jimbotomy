@@ -1,5 +1,14 @@
 return {
 	descriptions = {
+		Other = {
+			jimbotomy_programmer_art = {
+				name = "Programmer Art",
+				text = {
+					"The art for this card is unfinished.",
+					"It will change in a later update!"
+				}
+			}
+		},
 		Joker = {
 			j_jimbotomy_nerd_joker = {
 				name = "Nerd Joker",
@@ -33,15 +42,31 @@ return {
 			j_jimbotomy_house_of_cards = {
 				name = "House of Cards",
 				text = {
-					"{X:mult,C:white} x#1# {} Mult",
-					"{C:red}Debuffs after scoring{}"
+					"Gains {X:mult,C:white} x#2# {} Mult per round",
+					"{C:red}Self-destructs{} if hand scores below Blind requirement",
+					"{C:inactive}(Currently {X:mult,C:white} x#1# {C:inactive} Mult)",
 				}
 			},
 			j_jimbotomy_jjjoker = {
 				name = "JJJoker",
 				text = {
-					"{C:chips}+#2#{} Chips when anything is calculated",
+					"{C:chips}+#2#{} Chips when any Joker trigger effect is fired",
 					"{C:inactive}(Currently {C:chips}+#1#{C:inactive} Chips)"
+				}
+			},
+			j_jimbotomy_slugcat = {
+				name = "Slugcat",
+				text = {
+					"{C:mult}+#1#{} Mult when using a {C:attention}consumable{}",
+					"{C:mult}-#2#{} Mult when blind is selected",
+					"{C:inactive}(Currently {C:mult}+#3#{C:inactive} Mult)"
+				}
+			},
+			j_jimbotomy_plasma_joker = {
+				name = "Plasma Joker",
+				text = {
+					"Sets {C:chips}Chips{} and {C:mult}Mult#{} to",
+					"the square root of their {C:attention}product{}"
 				}
 			}
 		}
@@ -51,8 +76,9 @@ return {
 			k_jimbotomy_hourglass_done = "Time's Up!",
 			k_jimbotomy_swapped = "Swapped!",
 			k_jimbotomy_toppled = "Toppled!",
+			k_jimbotomy_assembled = "Assmebled!",
 			k_jimbotomy_slugcat_starved = "Starved...",
-			k_jimbotomy_scavenger_bye = "Bye!"
+			k_inactive = "inactive"
 		}
 	}
 }

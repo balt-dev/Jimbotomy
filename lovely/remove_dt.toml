@@ -1,21 +1,6 @@
 [manifest]
 version = "1.0.0"
-priority = 99990
-
-[[patches]]
-[patches.pattern]
-target = "functions/button_callbacks.lua"
-pattern = "G.FUNCS.use_card = function(e, mute, nosave)"
-position = "after"
-payload = '''
-if e.config.ref_table.ability.consumeable then
-	for i = 1, #G.jokers.cards do
-	    G.jokers.cards[i]:calculate_joker({using_consumeable = true})
-	end
-end
-'''
-match_indent = true
-times = 1
+priority = 0
 
 [[patches]]
 [patches.pattern]
