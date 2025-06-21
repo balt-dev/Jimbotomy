@@ -341,13 +341,13 @@ SMODS.Joker {
             })
         end
 
-        if context.joker_main then
+        if context.joker_main or context.forcetrigger then
             increase()
             return {
                 chips = card.ability.extra.chips
             }
         end
-        if context.modify_scoring_hand or context.scoring_name or context.ignore_debuff then return end
+        if context.modify_scoring_hand or context.scoring_name or context.ignore_debuff or context.cry_press then return end
         increase()
     end,
     demicoloncompat = true
