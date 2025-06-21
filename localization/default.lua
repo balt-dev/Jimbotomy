@@ -7,6 +7,12 @@ return {
 					"The art for this card is unfinished.",
 					"It will change in a later update!"
 				}
+			},
+			jimbotomy_guest_art = {
+				name = "Guest Art",
+				text = {
+					"Art by {C:attention}#1#{}"
+				}
 			}
 		},
 		Joker = {
@@ -36,7 +42,7 @@ return {
 			j_jimbotomy_hourglass = {
 				name = "Hourglass",
 				text = {
-					"{C:inactive}{C:mult}-0.1{C:inactive} Mult per second"
+					"{C:mult}-0.1{} Mult per second"
 				}
 			},
 			j_jimbotomy_house_of_cards = {
@@ -58,7 +64,8 @@ return {
 				name = "Slugcat",
 				text = {
 					"{C:mult}+#1#{} Mult when using a {C:attention}consumable{}",
-					"{C:mult}-#2#{} Mult when blind is selected",
+					"{C:mult}-#2#%{} Mult when blind is selected",
+					"{C:red}Destroyed if no consumables used since last blind{}",
 					"{C:inactive}(Currently {C:mult}+#3#{C:inactive} Mult)"
 				}
 			},
@@ -67,6 +74,30 @@ return {
 				text = {
 					"Sets {C:chips}Chips{} and {C:mult}Mult#{} to",
 					"the square root of their {C:attention}product{}"
+				}
+			},
+			j_jimbotomy_broken_lock = {
+				name = "Broken Lock",
+				text = {
+					"This joker acts as if it was",
+					"{C:attention}Eternal{} until it is sold"
+				}
+			},
+			j_jimbotomy_baltdev = {
+				name = "baltdev",
+				text = {
+					"Gains {X:mult,C:white} x#1# {} Mult",
+					"for every #2# {C:chips}Chips{} gained from",
+					"a playing card's base value",
+					"{C:inactive}(Currently {X:mult,C:white} x#3# {C:inactive} Mult, {C:chips}#4#{C:inactive}/{C:chips}#2#{C:inactive} Chips)"
+				}
+			},
+			j_jimbotomy_slot_machine = {
+				name = "Slot Machine",
+				text = {
+					"Sell this Joker to immediately use a random",
+					"{C:planet}Planet{}, {C:spectral}Spectral{}, or {C:tarot}Tarot{} card",
+					"Will never pick cards that cannot be used"
 				}
 			}
 		}
@@ -78,7 +109,11 @@ return {
 			k_jimbotomy_toppled = "Toppled!",
 			k_jimbotomy_assembled = "Assmebled!",
 			k_jimbotomy_slugcat_starved = "Starved...",
-			k_inactive = "inactive"
+			k_inactive = "inactive",
+			k_jimbotomy_slugcat_eaten_true = "fed",
+			k_jimbotomy_slugcat_eaten_false = "hungry",
+			k_jimbotomy_baltdev_note = "Hello there :3",
+			k_jimbotomy_baltdev_boop = "Boop!"
 		}
 	}
 }

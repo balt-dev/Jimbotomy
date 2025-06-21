@@ -1,4 +1,3 @@
-
 local function is_prime(num)
     if cmp(num, 1) <= 0 then
         return false
@@ -24,20 +23,20 @@ local nerd_joker_active = false
 
 SMODS.Joker {
     key = "nerd_joker",
+    discovered = true,
     atlas = 'jimbotomyJokers', pos = { x = 2, y = 0 },
     config = {
         extra = {
-            x_mult = 2,
+            xmult = 2,
             chips = 1,
             chip_limit = 1000000000, -- 1 billion
             active = false
         }
     },
     loc_vars = function(self, info_queue, card)
-        info_queue[#info_queue+1] = {set = "Other", key = "jimbotomy_programmer_art"}
         return {
             vars = {
-                card.ability.extra.x_mult,
+                card.ability.extra.xmult,
                 card.ability.extra.chips,
                 card.ability.extra.chip_limit
             }
@@ -45,9 +44,9 @@ SMODS.Joker {
     end,
     calculate = function(self, card, context)
         if not context.joker_main then return end
-        if nerd_joker_active then
+        if nerd_joker_active or context.forcetrigger then
             return {
-                xmult = card.ability.extra.x_mult,
+                xmult = card.ability.extra.xmult,
                 chips = card.ability.extra.chips
             }
         end
@@ -69,7 +68,8 @@ SMODS.Joker {
                 return true
             end, true)
         end
-    end
+    end,
+    demicoloncompat = true
 }
 
 
@@ -77,6 +77,7 @@ SMODS.Joker {
     atlas = 'jimbotomyJokers', pos = { x = 1, y = 0 },
     pixel_size = { w = 48, h = 95 },
     key = "domino",
+    discovered = true,
     rarity = 3,
     calculate = function(self, card, context)
         if not context.joker_main then return end
@@ -88,26 +89,28 @@ SMODS.Joker {
             chips = 0,
             remove_default_message = true
         }
-    end
+    end,
+    demicoloncompat = true
 }
 
 SMODS.Joker {
     rarity = 3,
     key = "roll_the_dice",
+    discovered = true,
     atlas = 'jimbotomyJokers', pos = { x = 3, y = 0 },
     config = {
         extra = {
-            x_mult = 1,
+            xmult = 1,
             chance = 5,
             total_chance = 6,
             multiplier = 1.25
         }
     },
     loc_vars = function(self, info_queue, card)
-        info_queue[#info_queue+1] = G.P_CENTERS.j_oops
+        info_queue[#info_queue + 1] = G.P_CENTERS.j_oops
         return {
             vars = {
-                card.ability.extra.x_mult,
+                card.ability.extra.xmult,
                 card.ability.extra.chance,
                 card.ability.extra.total_chance,
                 card.ability.extra.multiplier,
@@ -117,13 +120,14 @@ SMODS.Joker {
     end,
     eternal_compat = false,
     calculate = function(self, card, context)
-        if context.selling_self then
+        if context.selling_self or context.forcetrigger then
+            if context.forcetrigger then self:start_dissolve() end
             local random_seed = (G.GAME and G.GAME.pseudorandom.seed or "") .. "." .. "jimbotomy_roll_the_dice"
             local rand = pseudorandom(random_seed)
             local success = cmp(rand * card.ability.extra.chance, card.ability.extra.multiplier) >= 0
             if success then
-                local copy = copy_card(card, nil, nil, nil, card.edition and card.edition.negative)
-                copy.ability.extra.x_mult = copy.ability.extra.x_mult * card.ability.extra.multiplier
+                local copy = copy_card(card)
+                copy.ability.extra.xmult = copy.ability.extra.xmult * card.ability.extra.multiplier
                 copy:add_to_deck()
                 G.jokers:emplace(copy)
                 return {
@@ -137,9 +141,11 @@ SMODS.Joker {
                         trigger = 'after',
                         delay = 0.06 * G.SETTINGS.GAMESPEED,
                         blockable = false,
-                        blocking = false, func = function()
+                        blocking = false,
+                        func = function()
                             play_sound('tarot2', 0.76, 0.4)
-                            return true end
+                            return true
+                        end
                     })
                 )
                 return {
@@ -149,34 +155,41 @@ SMODS.Joker {
             end
         end
         if context.joker_main then
-            return { xmult = card.ability.extra.x_mult }
+            return { xmult = card.ability.extra.xmult }
         end
     end,
     update = function(self, card, dt)
         card.sell_cost = 0
-    end
+    end,
+    demicoloncompat = true
 }
 
 local function expire_joker(card, key, sound, color)
-    card_eval_status_text(card, 'extra', nil, nil, nil, {sound = sound, message = localize(key), colour = color})
+    card_eval_status_text(card, 'extra', nil, nil, nil, { sound = sound, message = localize(key), colour = color })
     card:juice_up(0.3, 0.4)
     G.E_MANAGER:add_event(
         Event({
-            trigger = 'after', delay = 0.2, blockable = false,
-            func = function()    
+            trigger = 'after',
+            delay = 0.2,
+            blockable = false,
+            func = function()
                 card.T.r = -0.2
                 card.states.drag.is = true
                 card.children.center.pinch.x = true
-            return true; end
+                return true;
+            end
         })
     )
     G.E_MANAGER:add_event(
         Event({
-            trigger = 'after', delay = 0.6, blockable = false,
+            trigger = 'after',
+            delay = 0.6,
+            blockable = false,
             func = function()
                 G.jokers:remove_card(card)
                 card:remove()
-            return true; end
+                return true;
+            end
         })
     )
 end
@@ -185,6 +198,7 @@ SMODS.Joker {
     discovered = true,
     rarity = 2,
     key = "hourglass",
+    discovered = true,
     atlas = 'jimbotomyJokers', pos = { x = 1, y = 1 },
     config = {
         extra = {
@@ -193,7 +207,6 @@ SMODS.Joker {
     },
     loc_vars = function(self, info_queue, card)
         card.ability.extra.sanitized_mult = sanitize(card.ability.extra.mult)
-        info_queue[#info_queue+1] = {set = "Other", key = "jimbotomy_programmer_art"}
         return {
             main_start = {
                 {
@@ -234,7 +247,8 @@ SMODS.Joker {
         if context.joker_main and not card.ability.extra.done then
             return {
                 mult = card.ability.extra.mult,
-                message = "+"..tostring(card.ability.extra.sanitized_mult or card.ability.extra.mult).." "..localize("k_mult"),
+                message = "+" ..
+                    tostring(card.ability.extra.sanitized_mult or card.ability.extra.mult) .. " " .. localize("k_mult"),
                 colour = G.C.RED,
                 remove_default_message = true,
                 sound = "multhit1"
@@ -251,40 +265,42 @@ SMODS.Joker {
             expire_joker(card, "k_jimbotomy_hourglass_done", "tarot1", G.C.GOLD)
         end
     end,
-    eternal_compat = false
+    eternal_compat = false,
+    demicoloncompat = true
 }
 
 SMODS.Joker {
     discovered = true,
     rarity = 3,
     key = "house_of_cards",
+    discovered = true,
     atlas = 'jimbotomyJokers', pos = { x = 3, y = 1 },
     config = {
         extra = {
-            x_mult = 1,
-            delta_x_mult = 0.3,
+            xmult = 1,
+            delta_xmult = 0.3,
         }
     },
     loc_vars = function(self, info_queue, card)
-        info_queue[#info_queue+1] = {set = "Other", key = "jimbotomy_programmer_art"}
+        info_queue[#info_queue + 1] = { set = "Other", key = "jimbotomy_guest_art", vars = {"Zygahedron (GitHub)"} }
         return {
             vars = {
-                card.ability.extra.x_mult,
-                card.ability.extra.delta_x_mult,
+                card.ability.extra.xmult,
+                card.ability.extra.delta_xmult,
             }
         }
     end,
     calculate = function(self, card, context)
         if context.joker_main then
             return {
-                xmult = card.ability.extra.x_mult
+                xmult = card.ability.extra.xmult
             }
         end
         if context.post_score then
             card.ability.extra.dead = cmp(context.score, G.GAME.blind.chips) < 0
         end
         if context.end_of_round and context.cardarea == G.jokers and not card.ability.extra.dead then
-            card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.delta_x_mult
+            card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.delta_xmult
             return {
                 message = localize("k_upgrade_ex")
             }
@@ -292,7 +308,8 @@ SMODS.Joker {
         if (context.hand_drawn or (context.end_of_round and context.cardarea == G.jokers)) and card.ability.extra.dead then
             expire_joker(card, "k_jimbotomy_toppled", "tarot1", G.C.RED)
         end
-    end
+    end,
+    demicoloncompat = true
 }
 
 SMODS.Joker {
@@ -315,10 +332,15 @@ SMODS.Joker {
     calculate = function(self, card, context)
         function increase()
             card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.gain_chips
-            card_eval_status_text(card, 'extra', nil, nil, nil, {message = 
-                "+" .. tostring(card.ability.extra.gain_chips)
-            , colour = G.C.BLUE, delay = 0.03})
+            card_eval_status_text(card, 'extra', nil, nil, nil, {
+                message =
+                    "+" .. tostring(card.ability.extra.gain_chips)
+                ,
+                colour = G.C.BLUE,
+                delay = 0.03
+            })
         end
+
         if context.joker_main then
             increase()
             return {
@@ -327,7 +349,8 @@ SMODS.Joker {
         end
         if context.modify_scoring_hand or context.scoring_name or context.ignore_debuff then return end
         increase()
-    end
+    end,
+    demicoloncompat = true
 }
 
 -- Slugcat - Uncommon
@@ -339,6 +362,16 @@ SMODS.Joker {
 -- the square root of their product
 -- (e.g. 28, 4 -> 10.6, 10.6)
 
+G.FUNCS.slugcat_starving = function(e)
+    if e.config.ref_table.ability.extra.has_eaten then
+        e.config.colour = mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8)
+    else
+        e.config.colour = mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8)
+    end
+    e.config.ref_table.slugcat_eaten_ui = ' ' ..
+        localize('k_jimbotomy_slugcat_eaten_' .. tostring(e.config.ref_table.ability.extra.has_eaten)) .. ' '
+end
+
 SMODS.Joker {
     discovered = true,
     blueprint_compat = true,
@@ -348,40 +381,64 @@ SMODS.Joker {
     config = {
         extra = {
             mult = 30,
-            delta_mult = 5,
+            added_mult = 10,
+            mult_percent = 15,
+            has_eaten = true
         }
     },
     loc_vars = function(self, info_queue, card)
-        info_queue[#info_queue+1] = {set = "Other", key = "jimbotomy_programmer_art"}
+        card.slugcat_eaten_ui = card.slugcat_eaten_ui or '';
+
         return {
-            vars = { card.ability.extra.delta_mult, 2 * card.ability.extra.delta_mult, card.ability.extra.mult }
+            vars = { card.ability.extra.added_mult, card.ability.extra.mult_percent, card.ability.extra.mult },
+            main_end = {
+                {
+                    n = G.UIT.C,
+                    config = { align = "bm", minh = 0.4 },
+                    nodes = {
+                        {
+                            n = G.UIT.C,
+                            config = { ref_table = card, align = "m", colour = G.C.JOKER_GREY, r = 0.05, padding = 0.06, func = 'slugcat_starving' },
+                            nodes = {
+                                { n = G.UIT.T, config = { ref_table = card, ref_value = 'slugcat_eaten_ui', colour = G.C.UI.TEXT_LIGHT, scale = 0.32 * 0.8 } },
+                            }
+                        }
+                    }
+                }
+            }
         }
     end,
-    calculate = function(self, card, context)        
+    calculate = function(self, card, context)
         if context.joker_main then
             return {
                 mult = card.ability.extra.mult
             }
         end
-        if context.setting_blind then
-            card.ability.extra.mult = card.ability.extra.mult - (2 * card.ability.extra.delta_mult)
-            if cmp(card.ability.extra.mult, 0) <= 0 then
+        if context.setting_blind and not context.forcetrigger then
+            if not card.ability.extra.has_eaten then
                 expire_joker(card, "k_jimbotomy_slugcat_starved", "tarot1", G.C.RED)
                 return {}
-            end 
+            end
+            card.ability.extra.has_eaten = false
+            juice_card_until(card, function()
+                return not card.ability.extra.has_eaten
+            end, true)
+            card.ability.extra.mult = card.ability.extra.mult * (1 - (card.ability.extra.mult_percent / 100));
             return {
-                message = "-" .. (2 * card.ability.extra.delta_mult),
+                message = "-" .. (card.ability.extra.mult_percent) .. "%",
                 colour = G.C.RED
             }
         end
-        if context.using_consumeable then
-            card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.delta_mult
+        if context.using_consumeable and not context.forcetrigger then
+            card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.added_mult
+            card.ability.extra.has_eaten = true
             return {
-                message = "+" .. card.ability.extra.delta_mult,
+                message = "+" .. card.ability.extra.added_mult,
                 colour = G.C.RED
             }
         end
-    end
+    end,
+    demicoloncompat = true
 }
 
 SMODS.Joker {
@@ -390,7 +447,7 @@ SMODS.Joker {
     rarity = 2,
     atlas = 'jimbotomyJokers', pos = { x = 0, y = 0 },
     key = "plasma_joker",
-    calculate = function(self, card, context)        
+    calculate = function(self, card, context)
         if context.joker_main then
             local product = hand_chips * mult
             local sqrt_product = math.sqrt(product)
@@ -398,14 +455,14 @@ SMODS.Joker {
             mult = sqrt_product
             local j = card.juice_up
             card.juice_up = function(...)
-                ease_colour(G.C.UI_CHIPS, {0.8, 0.45, 0.85, 1})
-                ease_colour(G.C.UI_MULT, {0.8, 0.45, 0.85, 1})
+                ease_colour(G.C.UI_CHIPS, { 0.8, 0.45, 0.85, 1 })
+                ease_colour(G.C.UI_MULT, { 0.8, 0.45, 0.85, 1 })
                 G.E_MANAGER:add_event(Event({
                     trigger = 'after',
                     blockable = false,
                     blocking = false,
                     delay = 1,
-                    func = (function() 
+                    func = (function()
                         ease_colour(G.C.UI_CHIPS, G.C.BLUE, 1)
                         ease_colour(G.C.UI_MULT, G.C.RED, 1)
                         return true
@@ -418,11 +475,103 @@ SMODS.Joker {
                 mult = 0,
                 remove_default_message = true,
                 message = localize("k_balanced"),
-                colour = {0.8, 0.45, 0.85, 1}, -- Plasma color
+                colour = { 0.8, 0.45, 0.85, 1 }, -- Plasma color
                 sound = "gong",
                 chips = 0,
             }
         end
     end,
+    demicoloncompat = true
+}
 
+SMODS.Joker {
+    discovered = true,
+    blueprint_compat = true,
+    name = "slot_machine",
+    atlas = 'jimbotomyJokers',
+    pos = { x = 0, y = 2 },
+    key = "slot_machine",
+    calculate = function(self, card, context)
+        if context.selling_self or context.forcetrigger then
+            local random_seed = (G.GAME and G.GAME.pseudorandom.seed or "") .. "." .. "jimbotomy_slot_machine"
+            local options = {"Tarot", "Tarot", "Planet", "Planet", "Planet", "Spectral"}
+            local card
+            local failsafe = 0
+            while true do
+                if card then card:remove() end
+                local option = options[math.floor(pseudorandom(random_seed) * (#options)) + 1]
+                card = create_card(option, nil, nil, nil, nil, nil, nil, random_seed)
+                failsafe = failsafe + 1
+                if failsafe == 100 then
+                    card:remove()
+                    return {
+                        message = "Failsafe!?"
+                    }
+                end
+                local res, val = pcall(card.can_use_consumeable, card, true, true)
+                if res and val then break end
+            end
+            card:add_to_deck()
+            G.FUNCS.use_card({config = {ref_table = card}}, true)
+            G.GAME.consumeable_buffer = 0
+        end
+    end,
+    eternal_compat = false,
+    demicoloncompat = true
+}
+
+SMODS.Joker {
+    discovered = true,
+    blueprint_compat = true,
+    rarity = 4,
+    name = "baltdev",
+    atlas = 'jimbotomyJokers',
+    pos = { x = 4, y = 0 }, soul_pos = { x = 4, y = 1 },
+    key = "baltdev",
+    config = {
+        extra = {
+            added_xmult = 0.04,
+            per_chips = 7,
+            chip_counter = 0,
+            xmult = 1
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = { card.ability.extra.added_xmult, card.ability.extra.per_chips, card.ability.extra.xmult, card.ability.extra.chip_counter },
+            main_end = { {
+                n = G.UIT.T,
+                config = {
+                    text = localize("k_jimbotomy_baltdev_note"),
+                    colour = G.C.UI.TEXT_INACTIVE,
+                    scale = 0.32 * 0.8,
+                }
+            } }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.play and not context.forcetrigger then
+            local ch = card.ability.extra.chip_counter
+            ch = ch + context.other_card:get_chip_bonus()
+            card.ability.extra.chip_counter = ch % card.ability.extra.per_chips
+            if ch < card.ability.extra.per_chips then
+                return {
+                    message = ("%g/%g"):format(sanitize(ch, 10), sanitize(card.ability.extra.per_chips, 10)),
+                    message_card = card,
+                    colour = G.C.BLUE
+                }
+            end
+            local trigger_count = math.floor(ch / card.ability.extra.per_chips)
+            local delta_xmult = trigger_count * card.ability.extra.added_xmult
+            card.ability.extra.xmult = card.ability.extra.xmult + delta_xmult
+            return {
+                message = localize("k_upgrade_ex"),
+                message_card = card,
+            }
+        end
+        if context.joker_main or context.forcetrigger then
+            return { xmult = card.ability.extra.xmult }
+        end
+    end,
+    demicoloncompat = true
 }

@@ -37,6 +37,7 @@ function deep_copy(value, seen)
     return value
 end
 
-function sanitize(x)
-    return math.floor(x * 100) / 100
+function sanitize(x, amount)
+	amount = amount or 100
+    return math.floor(x * amount) / amount
 end

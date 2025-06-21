@@ -1,15 +1,5 @@
-JokerGame 1989 - "Water game" based thing, x4 mult when ball in cup, but :juice_up launches the ball
--- Nerd Joker - x4 mult and +1 Chips if Chips is prime, debuffed if Chips > 1,000,000,000
-Tourist Joker - +25 mult if language is not set to system language
--- Roll the Dice - x{N} mult, 5/6 chance when selling this card to duplicate it with x{N * 1.5} (x1.5) mult (N starts at 1, sells for $1, unaffected by Oops! All 6's)
-Pirate Joker - +20 mult if Steam is not initialized
 Faceblind Joker - All face cards are treated as every face card
     Straight House - A straight and a full house at the same time (Only possible with Faceblind Joker and Four Fingers)
     Flush Straight House - Good luck.
-Scrambled Joker - Each played hand is scored as a random hand type - Includes locked hand types
--- Hourglass - +30 mult, decreases by 0.1 every second
-Punched Joker - Played and discarded cards are shuffled back into the deck
+Punched Joker - If no discards have been used, the first played hand gets shuffled back into the deck
 Perfectly Generic Object - +10 mult for every Joker without "Joker" in its name (searches for the localized string of the Joker card)
--- Domino - Swaps Chips and Mult
-Raccoon Joker - Allows discarding during opened Packs, discards used remove from the next Blind's discard count
-Joker^3 - Repeated 1 in 3 chance to retrigger any triggered card 3 times (Legendary, uses raymarching to make a 3D cube)
