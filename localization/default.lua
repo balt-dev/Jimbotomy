@@ -30,6 +30,13 @@ return {
 					"Swaps {C:mult}Mult{} and {C:chips}Chips{}"
 				}
 			},
+			j_jimbotomy_chain = {
+				name = "Chain",
+				text = {
+					"{C:green}#1# in #2#{} chance to",
+					"{C:attention}duplicate{} used consumables"
+				}
+			},
 			j_jimbotomy_roll_the_dice = {
 				name = "Roll The Dice",
 				text = {

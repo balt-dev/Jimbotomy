@@ -575,3 +575,37 @@ SMODS.Joker {
     end,
     demicoloncompat = true
 }
+
+SMODS.Joker {
+    discovered = true,
+    rarity = 2,
+    key = "chain",
+    discovered = true,
+    atlas = 'jimbotomyJokers', pos = { x = 1, y = 2 },
+    config = {
+        extra = {
+            odds = 6,
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = { set = "Other", key = "jimbotomy_guest_art", vars = {"ninja22. (Discord)"} }
+        return {
+            vars = {
+                ''..(G.GAME and G.GAME.probabilities.normal or 1),
+                card.ability.extra.odds
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.using_consumeable and pseudorandom('jimbotomy_chain') < G.GAME.probabilities.normal/card.ability.extra.odds then
+            local consumeable = context.consumeable
+            local copy = copy_card(consumeable)
+            copy:add_to_deck()
+            G.consumeables:emplace(copy)
+            return {
+                message = localize('k_copied_ex'),
+                message_card = card
+            }
+        end
+    end,
+}
