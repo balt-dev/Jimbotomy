@@ -536,6 +536,7 @@ SMODS.Joker {
             xmult = 1
         }
     },
+    cost = 20,
     loc_vars = function(self, info_queue, card)
         return {
             vars = { card.ability.extra.added_xmult, card.ability.extra.per_chips, card.ability.extra.xmult, card.ability.extra.chip_counter },
