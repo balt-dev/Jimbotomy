@@ -429,7 +429,7 @@ SMODS.Joker {
                 colour = G.C.RED
             }
         end
-        if context.using_consumeable and not context.forcetrigger then
+        if context.using_consumeable or context.forcetrigger then
             card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.added_mult
             card.ability.extra.has_eaten = true
             return {
