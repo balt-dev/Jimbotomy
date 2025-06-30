@@ -244,7 +244,7 @@ SMODS.Joker {
         }
     end,
     calculate = function(self, card, context)
-        if context.joker_main and not card.ability.extra.done then
+        if (context.forcetrigger or context.joker_main) and not card.ability.extra.done then
             return {
                 mult = card.ability.extra.mult,
                 message = "+" ..
