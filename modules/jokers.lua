@@ -448,7 +448,7 @@ SMODS.Joker {
     atlas = 'jimbotomyJokers', pos = { x = 0, y = 0 },
     key = "plasma_joker",
     calculate = function(self, card, context)
-        if context.joker_main then
+        if context.joker_main or context.forcetrigger then
             local product = hand_chips * mult
             local sqrt_product = math.sqrt(product)
             hand_chips = sqrt_product
@@ -598,7 +598,7 @@ SMODS.Joker {
         }
     end,
     calculate = function(self, card, context)
-        if context.using_consumeable and pseudorandom('jimbotomy_chain') < G.GAME.probabilities.normal/card.ability.extra.odds then
+        if context.using_consumeable and cmp(pseudorandom('jimbotomy_chain'), G.GAME.probabilities.normal/card.ability.extra.odds)<0 then
             local consumeable = context.consumeable
             local copy = copy_card(consumeable)
             copy:add_to_deck()
