@@ -107,6 +107,26 @@ return {
 					"Will never pick cards that cannot be used"
 				}
 			}
+		},
+		Back = {
+			b_jimbotomy_overflow = {
+				name = "Totally Not Nuclear Deck",
+				text = {
+					"Blinds scale by the base",
+					"{C:attention}to the power of{}",
+					"the current {C:attention}Ante{}",
+					"Scoring is {C:chips}Chips{} {C:attention}^{} {C:mult}Mult{}",
+					"Can only make {C:attention}one{}",
+					"purchase per shop",
+				}
+			},
+			b_jimbotomy_criminal = {
+				name = "Criminal Deck",
+				text = {
+					"Everything is {C:money}$0{}",
+					"Rerolls are {C:red}disabled{}",
+				}
+			}
 		}
 	},
 	misc = {
