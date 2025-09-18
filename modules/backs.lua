@@ -10,6 +10,18 @@ if Cryptid then
 end
 
 SMODS.Back {
+	key = "underflow",
+	atlas = 'jimbotomy_decks', pos = { x = 2, y = 0 },
+	apply = function (self, back)
+        G.GAME.modifiers.jimbotomy_underflow = true
+		SMODS.set_scoring_calculation('jimbotomy_underflow')
+	end,
+	config = {
+		hands = 3
+	}
+}
+
+SMODS.Back {
 	key = "criminal",
 	atlas = 'jimbotomy_decks', pos = { x = 1, y = 0 },
 	apply = function (self, back)
@@ -35,6 +47,9 @@ function get_blind_amount(ante)
 	if G.GAME.modifiers.jimbotomy_overflow then
 		res = res ^ ante
 	end
+	if G.GAME.modifiers.jimbotomy_underflow then
+		res = res / 2
+	end
 	return res
 end
 
@@ -50,3 +65,10 @@ function Card:set_cost()
 	end
 	Card_set_cost(self)
 end
+
+SMODS.Scoring_Calculation {
+    key = "underflow",
+    func = function(self, chips, mult, flames) return chips + math.log(math.max(mult, 1), 2) end,
+    colour = G.C.BLUE,
+    text = "+"
+}

@@ -120,6 +120,14 @@ return {
 					"purchase per shop",
 				}
 			},
+			b_jimbotomy_underflow = {
+				name = "Underflow Deck",
+				text = {
+					"+3 {C:blue}Hands{}",
+					"Scoring is {C:chips}Chips{} {C:attention}+{} log2({C:mult}Mult{})",
+					"Blind requirements are {C:attention}halved{}"
+				}
+			},
 			b_jimbotomy_criminal = {
 				name = "Criminal Deck",
 				text = {
@@ -134,7 +142,7 @@ return {
 			k_jimbotomy_hourglass_done = "Time's Up!",
 			k_jimbotomy_swapped = "Swapped!",
 			k_jimbotomy_toppled = "Toppled!",
-			k_jimbotomy_assembled = "Assmebled!",
+			k_jimbotomy_assembled = "Assembled!",
 			k_jimbotomy_slugcat_starved = "Starved...",
 			k_inactive = "inactive",
 			k_jimbotomy_slugcat_eaten_true = "fed",
