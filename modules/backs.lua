@@ -68,7 +68,7 @@ end
 
 SMODS.Scoring_Calculation {
     key = "underflow",
-    func = function(self, chips, mult, flames) return chips + math.log(math.max(mult, 1), 2) end,
+    func = function(self, chips, mult, flames) return chips + mult end,
     colour = G.C.BLUE,
     text = "+"
 }

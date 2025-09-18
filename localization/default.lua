@@ -124,7 +124,7 @@ return {
 				name = "Underflow Deck",
 				text = {
 					"+3 {C:blue}Hands{}",
-					"Scoring is {C:chips}Chips{} {C:attention}+{} log2({C:mult}Mult{})",
+					"Scoring is {C:chips}Chips{} {C:attention}+{} {C:mult}Mult{",
 					"Blind requirements are {C:attention}halved{}"
 				}
 			},
