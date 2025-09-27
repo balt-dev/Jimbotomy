@@ -112,10 +112,8 @@ return {
 			b_jimbotomy_overflow = {
 				name = "Overflow Deck",
 				text = {
-					"Blinds scale by the base",
-					"{C:attention}to the power of{}",
-					"the current {C:attention}Ante{}",
-					"Scoring is {C:chips}Chips{} {C:attention}^{} {C:mult}Mult{}",
+					"Blinds scale {C:attention}much faster{}",
+					"Scoring is {C:chips}Chips{} {C:attention}^ log2{} {C:mult}Mult{}",
 					"Can only make {C:attention}one{}",
 					"purchase per shop",
 					"{C:inactive}Totally not Nuclear Deck!{}"

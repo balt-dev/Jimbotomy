@@ -4,7 +4,7 @@ if Cryptid then
 		atlas = 'jimbotomy_decks', pos = { x = 0, y = 0 },
 		apply = function (self, back)
 	        G.GAME.modifiers.jimbotomy_overflow = true
-			SMODS.set_scoring_calculation('exponent')
+			SMODS.set_scoring_calculation('jimbotomy_overflow')
 		end
 	}
 end
@@ -45,11 +45,10 @@ local ORIG_get_blind_amount = get_blind_amount
 function get_blind_amount(ante)
 	local res = ORIG_get_blind_amount(ante)
 	if G.GAME.modifiers.jimbotomy_overflow then
-		res = res ^ ante
+		res = res ^ math.sqrt(ante + 1)
 	end
 	if G.GAME.modifiers.jimbotomy_underflow then
-		local mod = 10 ^ (ante + 2)
-		res = math.log(math.abs(res) / mod, 1.4) * mod
+		res = (math.abs(res)) ^ (1 / 1.1)
 	end
 	return res
 end
@@ -74,14 +73,21 @@ SMODS.Scoring_Calculation {
     text = "+"
 }
 
+SMODS.Scoring_Calculation {
+    key = "overflow",
+    func = function(self, chips, mult, flames) return chips ^ math.log(math.max(1, mult), 2) end,
+    colour = G.C.GREEN,
+    text = "^l2"
+}
+
 local Blind_set_blind = Blind.set_blind
 
 function Blind:set_blind(...)
 	if G.GAME.modifiers.jimbotomy_overflow then
-		SMODS.set_scoring_calculation('exponent')
+		SMODS.set_scoring_calculation('jimbotomy_overflow')
 	end
 	if G.GAME.modifiers.jimbotomy_underflow then
 		SMODS.set_scoring_calculation('jimbotomy_underflow')
 	end
-	return Blind_set_blind(...)
+	return Blind_set_blind(self, ...)
 end
