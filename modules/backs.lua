@@ -72,3 +72,15 @@ SMODS.Scoring_Calculation {
     colour = G.C.BLUE,
     text = "+"
 }
+
+local Blind_set_blind = Blind.set_blind
+
+function Blind:set_blind(...)
+	if G.GAME.modifiers.jimbotomy_overflow then
+		SMODS.set_scoring_calculation('exponent')
+	end
+	if G.GAME.modifiers.jimbotomy_underflow then
+		SMODS.set_scoring_calculation('jimbotomy_underflow')
+	end
+	return Blind_set_blind(...)
+end

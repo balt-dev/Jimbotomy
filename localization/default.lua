@@ -110,7 +110,7 @@ return {
 		},
 		Back = {
 			b_jimbotomy_overflow = {
-				name = "Totally Not Nuclear Deck",
+				name = "Overflow Deck",
 				text = {
 					"Blinds scale by the base",
 					"{C:attention}to the power of{}",
@@ -118,6 +118,7 @@ return {
 					"Scoring is {C:chips}Chips{} {C:attention}^{} {C:mult}Mult{}",
 					"Can only make {C:attention}one{}",
 					"purchase per shop",
+					"{C:inactive}Totally not Nuclear Deck!{}"
 				}
 			},
 			b_jimbotomy_underflow = {
