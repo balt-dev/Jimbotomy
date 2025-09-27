@@ -126,7 +126,7 @@ return {
 				text = {
 					"+3 {C:blue}Hands{}",
 					"Scoring is {C:chips}Chips{} {C:attention}+{} {C:mult}Mult{",
-					"Blind requirements are {C:attention}halved{}"
+					"Blind requirements are {C:attention}heavily reduced{}"
 				}
 			},
 			b_jimbotomy_criminal = {

@@ -48,7 +48,8 @@ function get_blind_amount(ante)
 		res = res ^ ante
 	end
 	if G.GAME.modifiers.jimbotomy_underflow then
-		res = res / 2
+		local mod = 10 ^ (ante + 2)
+		res = math.log(math.abs(res) / mod, 1.4) * mod
 	end
 	return res
 end
