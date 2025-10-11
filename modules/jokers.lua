@@ -82,8 +82,8 @@ SMODS.Joker {
     rarity = 3,
     calculate = function(self, card, context)
         if not context.joker_main then return end
-        hand_chips, hand_mult = hand_mult, hand_chips
         return {
+			swap = true, -- smods has a method for this
             message = localize("k_jimbotomy_swapped"),
             colour = G.C.GOLD,
             sound = "jimbotomy_swap",
