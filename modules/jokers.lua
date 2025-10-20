@@ -70,6 +70,7 @@ SMODS.Joker {
         end
     end,
     demicoloncompat = true
+    -- implementing jokerdisplay for this would require pre-computing the hand
 }
 
 
@@ -81,8 +82,8 @@ SMODS.Joker {
     rarity = 3,
     calculate = function(self, card, context)
         if not context.joker_main then return end
-        hand_chips, mult = mult, hand_chips
         return {
+			swap = true, -- smods has a method for this
             message = localize("k_jimbotomy_swapped"),
             colour = G.C.GOLD,
             sound = "jimbotomy_swap",
@@ -161,7 +162,20 @@ SMODS.Joker {
     update = function(self, card, dt)
         card.sell_cost = 0
     end,
-    demicoloncompat = true
+    demicoloncompat = true,
+	joker_display_def = function(JokerDisplay)
+		---@type JDJokerDefinition
+		return {
+			text = {
+				{
+					border_nodes = {
+						{ text = "X" },
+						{ ref_table = "card.ability.extra", ref_value = "xmult", retrigger_type = "exp"}
+					}
+				}
+			}
+		}
+	end
 }
 
 local function expire_joker(card, key, sound, color)
@@ -205,6 +219,11 @@ SMODS.Joker {
             mult = 30
         }
     },
+	--[[dependencies = {
+		items = { -- attempt at disabling if Cryptid's "Timer Mechanics" toggle is disabled, but apparently it's not that simple. :(
+			"set_cry_timer" 
+		},
+	},]]
     loc_vars = function(self, info_queue, card)
         card.ability.extra.sanitized_mult = sanitize(card.ability.extra.mult)
         return {
@@ -266,7 +285,18 @@ SMODS.Joker {
         end
     end,
     eternal_compat = false,
-    demicoloncompat = true
+    demicoloncompat = true,
+	--[[joker_display_def = function(JokerDisplay)
+		---@type JDJokerDefinition
+		return {
+			text = { -- why doesnt this work????????
+				{
+					{ text = "+" },
+					{ ref_table = "card.ability.extra", ref_value = "mult", retrigger_type = "mult"}
+				}
+			}
+		}
+	end]]
 }
 
 SMODS.Joker {
@@ -309,7 +339,20 @@ SMODS.Joker {
             expire_joker(card, "k_jimbotomy_toppled", "tarot1", G.C.RED)
         end
     end,
-    demicoloncompat = true
+    demicoloncompat = true,
+	joker_display_def = function(JokerDisplay)
+		---@type JDJokerDefinition
+		return {
+			text = {
+				{
+					border_nodes = {
+						{ text = "X" },
+						{ ref_table = "card.ability.extra", ref_value = "xmult", retrigger_type = "exp"}
+					}
+				}
+			}
+		}
+	end
 }
 
 SMODS.Joker {
@@ -438,7 +481,24 @@ SMODS.Joker {
             }
         end
     end,
-    demicoloncompat = true
+    demicoloncompat = true,
+	joker_display_def = function(JokerDisplay)
+		---@type JDJokerDefinition
+		return {
+			text = {
+				{ text = "+" , colour=G.C.MULT},
+				{ ref_table = "card.ability.extra", ref_value = "mult", retrigger_type = "mult", colour=G.C.MULT}
+			}--[[,
+			reminder_text = {
+				{ text = "nil"}
+			}]]
+		}
+	end--[[,  --apparently this doesn't work.
+	style_function = function(card, text, reminder_text, extra)
+		print(reminder_text.children) -- look for how to set reminder_text
+		reminder_text.children[0].config.colour = G.C.GREEN and card.ability.extra.has_eaten or G.C.RED
+		reminder_text.children[0].config.text = localize('k_jimbotomy_slugcat_eaten_' .. tostring(e.config.ref_table.ability.extra.has_eaten)) .. ' '
+	end,]]
 }
 
 SMODS.Joker {
@@ -574,7 +634,27 @@ SMODS.Joker {
             return { xmult = card.ability.extra.xmult }
         end
     end,
-    demicoloncompat = true
+    demicoloncompat = true,
+	joker_display_def = function(JokerDisplay) 
+		---@type JDJokerDefinition
+		return {
+			text = {
+				{
+					border_nodes = {
+						{ text = "X" },
+						{ ref_table = "card.ability.extra", ref_value = "xmult", retrigger_type = "exp"}
+					}
+				}
+			},
+			reminder_text = {
+				{ text = "(" },
+				{ ref_table = "card.ability.extra", ref_value = "chip_counter", colour = G.C.CHIPS },
+				{ text = "/" },
+				{ ref_table = "card.ability.extra", ref_value = "per_chips", colour = G.C.CHIPS },
+				{ text = ")" }
+			}
+		}
+	end
 }
 
 SMODS.Joker {

@@ -144,8 +144,8 @@ return {
 			k_jimbotomy_assembled = "Assembled!",
 			k_jimbotomy_slugcat_starved = "Starved...",
 			k_inactive = "inactive",
-			k_jimbotomy_slugcat_eaten_true = "fed",
-			k_jimbotomy_slugcat_eaten_false = "hungry",
+			k_jimbotomy_slugcat_eaten_true = "Fed",
+			k_jimbotomy_slugcat_eaten_false = "Hungry",
 			k_jimbotomy_baltdev_note = "Hello there :3",
 			k_jimbotomy_baltdev_boop = "Boop!"
 		}
