@@ -4,7 +4,6 @@ if Cryptid then
 		atlas = 'jimbotomy_decks', pos = { x = 0, y = 0 },
 		apply = function (self, back)
 	        G.GAME.modifiers.jimbotomy_overflow = true
-			SMODS.set_scoring_calculation('jimbotomy_overflow')
 		end
 	}
 end
@@ -14,7 +13,6 @@ SMODS.Back {
 	atlas = 'jimbotomy_decks', pos = { x = 2, y = 0 },
 	apply = function (self, back)
         G.GAME.modifiers.jimbotomy_underflow = true
-		SMODS.set_scoring_calculation('jimbotomy_underflow')
 	end,
 	config = {
 		hands = 3
