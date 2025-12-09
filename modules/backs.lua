@@ -43,7 +43,7 @@ local ORIG_get_blind_amount = get_blind_amount
 function get_blind_amount(ante)
 	local res = ORIG_get_blind_amount(ante)
 	if G.GAME.modifiers.jimbotomy_overflow then
-		res = res ^ math.sqrt(ante + 1)
+		res = res ^ (ante + 1)
 	end
 	if G.GAME.modifiers.jimbotomy_underflow then
 		res = (math.abs(res)) ^ (1 / 1.1)
