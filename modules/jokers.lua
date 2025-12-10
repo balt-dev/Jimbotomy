@@ -594,7 +594,8 @@ SMODS.Joker {
             per_chips = 7,
             chip_counter = 0,
             xmult = 1
-        }
+        },
+		pronouns = 'pn_they_them'
     },
     cost = 20,
     loc_vars = function(self, info_queue, card)
