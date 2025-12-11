@@ -504,7 +504,7 @@ SMODS.Joker {
 SMODS.Joker {
     discovered = true,
     blueprint_compat = true,
-    rarity = 2,
+    rarity = 1,
     atlas = 'jimbotomyJokers', pos = { x = 0, y = 0 },
     key = "plasma_joker",
     calculate = function(self, card, context)
@@ -590,8 +590,8 @@ SMODS.Joker {
     key = "baltdev",
     config = {
         extra = {
-            added_xmult = 0.04,
-            per_chips = 7,
+            added_xmult = 0.1,
+            per_chips = 10,
             chip_counter = 0,
             xmult = 1
         },
@@ -688,6 +688,41 @@ SMODS.Joker {
                 message = localize('k_copied_ex'),
                 message_card = card
             }
+        end
+    end,
+}
+
+local ffi = require("ffi")
+
+local C
+if ffi.os == "Windows" then
+    C = ffi.load("msvcrt")
+else
+    C = ffi.C 
+end
+
+ffi.cdef[[
+    void* malloc(size_t size);
+    void free(void* ptr);
+]]
+
+
+SMODS.Joker {
+    discovered = true,
+    rarity = 1,
+    key = "segfault",
+    discovered = true,
+    atlas = 'jimbotomyJokers', pos = { x = 2, y = 2 },
+    config = {},
+    loc_vars = function(self, info_queue, card)
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main then
+            local ptr = ffi.cast("double *", C.malloc(ffi.sizeof("double"))) -- Uninitialized!
+            local mult = ptr[0]
+            C.free(ptr)
+            if math.abs(mult) == math.huge or mult ~= mult then mult = 0 end
+            return { mult = mult }
         end
     end,
 }

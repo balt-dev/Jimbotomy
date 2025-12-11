@@ -41,8 +41,8 @@ return {
 				name = "Roll The Dice",
 				text = {
 					"On selling, {C:green}#2# in #3#{} chance",
-					"to copy with {C:attention}x#4#{} as much {X:mult,C:white}xMult{}",
-					"{C:inactive}(Currently {X:mult,C:white} x#1# {C:inactive} Mult)",
+					"to copy with {C:attention}X#4#{} as much {X:mult,C:white}xMult{}",
+					"{C:inactive}(Currently {X:mult,C:white} X#1# {C:inactive} Mult)",
 					"{C:inactive}Unaffected by {C:green}#5#{}"
 				}
 			},
@@ -55,9 +55,9 @@ return {
 			j_jimbotomy_house_of_cards = {
 				name = "House of Cards",
 				text = {
-					"Gains {X:mult,C:white} x#2# {} Mult per round",
+					"Gains {X:mult,C:white} X#2# {} Mult per round",
 					"{C:red}Self-destructs{} if hand scores below Blind requirement",
-					"{C:inactive}(Currently {X:mult,C:white} x#1# {C:inactive} Mult)",
+					"{C:inactive}(Currently {X:mult,C:white} X#1# {C:inactive} Mult)",
 				}
 			},
 			j_jimbotomy_jjjoker = {
@@ -93,10 +93,10 @@ return {
 			j_jimbotomy_baltdev = {
 				name = "baltdev",
 				text = {
-					"Gains {X:mult,C:white} x#1# {} Mult",
+					"Gains {X:mult,C:white} X#1# {} Mult",
 					"for every #2# {C:chips}Chips{} gained from",
 					"a playing card's base value",
-					"{C:inactive}(Currently {X:mult,C:white} x#3# {C:inactive} Mult, {C:chips}#4#{C:inactive}/{C:chips}#2#{C:inactive} Chips)"
+					"{C:inactive}(Currently {X:mult,C:white} X#3# {C:inactive} Mult, {C:chips}#4#{C:inactive}/{C:chips}#2#{C:inactive} Chips)"
 				}
 			},
 			j_jimbotomy_slot_machine = {
@@ -105,6 +105,15 @@ return {
 					"Sell this Joker to immediately use a random",
 					"{C:planet}Planet{}, {C:spectral}Spectral{}, or {C:tarot}Tarot{} card",
 					"Will never pick cards that cannot be used"
+				}
+			},
+			j_jimbotomy_segfault = {
+				name = "Segfault",
+				text = {
+					"Adds the value of an",
+					"{C:red}uninitialized double{} to Mult",
+					"{C:inactive}(Will be {C:attention}0{C:inactive} if value is non-finite)",
+					"{C:inactive,s:0.8}Depending on your OS, this may crash the game"
 				}
 			}
 		},

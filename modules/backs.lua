@@ -31,12 +31,12 @@ function jimbotomy_on_enter_shop_hook()
 	G.GAME.modifiers.shop_disabled = false
 end
 
-local ORIG_inc_career_stat = inc_career_stat
-function inc_career_stat(key, value)
-	if key == "c_shop_dollars_spent" and G.GAME.modifiers.jimbotomy_overflow then
+local buy_shop = G.FUNCS.buy_from_shop
+function G.FUNCS.buy_from_shop(...)
+	if G.GAME.modifiers.jimbotomy_overflow then
 		G.GAME.modifiers.shop_disabled = true
 	end
-	return ORIG_inc_career_stat(key, value)
+	return buy_shop(...)
 end
 
 local ORIG_get_blind_amount = get_blind_amount
