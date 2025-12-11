@@ -72,7 +72,8 @@ return {
 				text = {
 					"{C:mult}+#1#{} Mult when using a {C:attention}consumable{}",
 					"{C:mult}-#2#%{} Mult when blind is selected",
-					"{C:red}Destroyed if no consumables used since last blind{}",
+					"{C:red}Destroyed{} if no {C:attention}consumables",
+					"used since last {C:attention}Blind",
 					"{C:inactive}(Currently {C:mult}+#3#{C:inactive} Mult)"
 				}
 			},

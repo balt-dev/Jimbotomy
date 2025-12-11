@@ -425,7 +425,7 @@ SMODS.Joker {
         extra = {
             mult = 30,
             added_mult = 10,
-            mult_percent = 15,
+            mult_percent = 5,
             has_eaten = true
         }
     },
@@ -671,15 +671,15 @@ SMODS.Joker {
     },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = { set = "Other", key = "jimbotomy_guest_art", vars = {"ninja22. (Discord)"} }
+        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'madness_credit_card')
         return {
-            vars = {
-                ''..(G.GAME and G.GAME.probabilities.normal or 1),
-                card.ability.extra.odds
-            }
+            vars = { numerator, denominator, localize{type = 'name_text', key="tag_coupon", set="Tag"} },
         }
     end,
     calculate = function(self, card, context)
-        if context.using_consumeable and cmp(pseudorandom('jimbotomy_chain'), G.GAME.probabilities.normal/card.ability.extra.odds)<0 then
+        if context.using_consumeable and 
+            SMODS.pseudorandom_probability(card, 'jimbotomy_chain', 1, card.ability.extra.odds)
+        then
             local consumeable = context.consumeable
             local copy = copy_card(consumeable)
             copy:add_to_deck()
